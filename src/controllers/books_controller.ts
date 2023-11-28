@@ -35,3 +35,27 @@ export const updateBook = async (req: Request, res: Response) => {
 	const book = await bookService.updateBook(bookId, bookUpdateData);
 	res.status(204).json(book);
 };
+
+// User Story 5 - Delete Book By Id
+export const deleteBook = async (req: Request, res: Response) => {
+	const bookId = Number.parseInt(req.params.bookId, 10);
+
+	console.log("deleteBook::bookId: ", bookId);
+
+	if (isNaN(bookId)) {
+		console.log("deleteBook::isNaN");
+		res.status(400).json({ message: "bookId must be numeric" });
+	} else {
+		console.log("bookId: ", bookId);
+
+		const rowsDeleted = await bookService.deleteBook(bookId);
+
+		console.log("rowsDeleted: ", rowsDeleted);
+
+		if (isNaN(rowsDeleted) || rowsDeleted === 0) {
+			res.status(404).send();
+		} else {
+			res.redirect(303, "/api/v1/books");
+		}
+	}
+};

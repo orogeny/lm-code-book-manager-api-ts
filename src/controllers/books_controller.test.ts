@@ -133,3 +133,29 @@ describe("POST /api/v1/books endpoint", () => {
 		expect(res.statusCode).toEqual(400);
 	});
 });
+
+describe("DELETE /api/v1/books/{bookId} endpoint", () => {
+	test("none-numeric bookId parameter returns 400 - Bad Request", async () => {
+		// Act
+		const res = await request(app).delete("/api/v1/books/abc").query({});
+
+		// Assert
+		expect(res.statusCode).toEqual(400);
+	});
+
+	test("unknown bookId returns 404 - Not Found", async () => {
+		// Act
+		const res = await request(app).delete("/api/v1/books/99");
+
+		// Assert
+		expect(res.statusCode).toEqual(404);
+	});
+
+	// test("deleting known bookId returns 303 - See Other", async () => {
+	// 	// Act
+	// 	const res = await request(app).delete("/api/v1/books/2");
+
+	// 	// Assert
+	// 	expect(res.statusCode).toEqual(303);
+	// });
+});
