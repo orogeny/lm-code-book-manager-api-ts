@@ -143,19 +143,25 @@ describe("DELETE /api/v1/books/{bookId} endpoint", () => {
 		expect(res.statusCode).toEqual(400);
 	});
 
-	test("unknown bookId returns 404 - Not Found", async () => {
+	test("deleting an existing book returns 1 row deleted", async () => {
+		// Arrange
+		jest.spyOn(bookService, "deleteBook").mockResolvedValue(1);
+
+		// Act
+		const res = await request(app).delete("/api/v1/books/2");
+
+		// Assert
+		expect(res.statusCode).toEqual(303);
+	});
+
+	test("deleting a non-existent book returns 0 row deleted", async () => {
+		// Arrange
+		jest.spyOn(bookService, "deleteBook").mockResolvedValue(0);
+
 		// Act
 		const res = await request(app).delete("/api/v1/books/99");
 
 		// Assert
 		expect(res.statusCode).toEqual(404);
 	});
-
-	// test("deleting known bookId returns 303 - See Other", async () => {
-	// 	// Act
-	// 	const res = await request(app).delete("/api/v1/books/2");
-
-	// 	// Assert
-	// 	expect(res.statusCode).toEqual(303);
-	// });
 });
