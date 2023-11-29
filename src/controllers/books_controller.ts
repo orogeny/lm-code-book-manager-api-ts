@@ -40,17 +40,10 @@ export const updateBook = async (req: Request, res: Response) => {
 export const deleteBook = async (req: Request, res: Response) => {
 	const bookId = Number.parseInt(req.params.bookId, 10);
 
-	console.log("deleteBook::bookId: ", bookId);
-
 	if (isNaN(bookId)) {
-		console.log("deleteBook::isNaN");
 		res.status(400).json({ message: "bookId must be numeric" });
 	} else {
-		console.log("bookId: ", bookId);
-
 		const rowsDeleted = await bookService.deleteBook(bookId);
-
-		console.log("rowsDeleted: ", rowsDeleted);
 
 		if (isNaN(rowsDeleted) || rowsDeleted === 0) {
 			res.status(404).send();
