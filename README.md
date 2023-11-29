@@ -6,21 +6,21 @@ This is the starter repository for the Further APIs session. It provides a start
 
 ### Pre-Requisites
 
--   NodeJS installed (v18.12.1 Long Term Support version at time of writing)
+- NodeJS installed (v18.12.1 Long Term Support version at time of writing)
 
 ### Technologies & Dependencies
 
--   [TypeScript](https://www.typescriptlang.org/)
--   [ExpressJS](https://expressjs.com/)
--   [Sequelize](https://sequelize.org/)
--   [SQLite3](https://www.npmjs.com/package/sqlite3)
--   [Jest](https://jestjs.io/)
--   [Supertest](https://www.npmjs.com/package/supertest)
--   [ESLint](https://eslint.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [ExpressJS](https://expressjs.com/)
+- [Sequelize](https://sequelize.org/)
+- [SQLite3](https://www.npmjs.com/package/sqlite3)
+- [Jest](https://jestjs.io/)
+- [Supertest](https://www.npmjs.com/package/supertest)
+- [ESLint](https://eslint.org/)
 
 ### How to Get Started
 
--   Fork this repo to your Github and then clone the forked version of this repo
+- Fork this repo to your Github and then clone the forked version of this repo
 
 ### Running the application
 
@@ -50,18 +50,39 @@ Followed by:
 npm test
 ```
 
-### Tasks
+### User Story: As a user, I want to use the Book Manager API to delete a book using its ID
 
-Here are some tasks for you to work on:
+To delete a book, the user must send a DELETE request to the /books/:bookId endpoint
 
-📘 Task 1: Implement the following User Story with tests.
+> DELETE /books/99
 
-`User Story: As a user, I want to use the Book Manager API to delete a book using its ID`
+where :bookId is the numeric identifier of the book to be deleted.
 
-📘 Extension Task: Oh no! 😭 We've only covered the happy paths in the solution, can you figure out a way
-to add in exception handling to the project?
+#### Responses
 
--   Clue 1: What if someone wants to add a book with an ID for a book that already exists? How do we handle this gracefully?
+##### Success
 
--   Clue 2: What if someone wants to find a book by an ID that doesn't yet exist?
-    How can we improve the API by handling errors gracefully and show a helpful message to the client?
+- 303 - See Other[^1]
+- Location: /books
+
+  If the book was successfully deleted the client will receive a 303 - See Other response plus a Location header containing the URL to the books collection.
+
+##### Unknown BookId
+
+- 404 - Not Found[^2]
+
+If the bookId is numeric but was not found in the Book repository the client will receive a 404 - Not Found response indicating that no book exists with that id and no action was taken.
+
+##### Invalid bookId
+
+- 400 - Bad Request
+
+- Body
+  > message: "bookId must be numeric"
+
+If a non-numeric book id was supplied the client will receive a 400 - Bad Request response with a message in the body indicating the problem.
+
+Footnotes:
+
+[^1]: A 204 - Done response was rejected as a client would not navigate away from the deleted book's URL.
+[^2]: A 410 - Gone response was rejected as it indicates the id did previously exists which would necessitate tracking deleted book ids and ensuring they are not used again.
