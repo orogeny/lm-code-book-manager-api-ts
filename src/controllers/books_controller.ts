@@ -48,7 +48,7 @@ export const deleteBook = async (req: Request, res: Response) => {
 		if (isNaN(rowsDeleted) || rowsDeleted === 0) {
 			res.status(404).send();
 		} else {
-			res.redirect(303, "/api/v1/books");
+			res.status(204).json();
 		}
 	}
 };

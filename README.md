@@ -62,14 +62,13 @@ where :bookId is the numeric identifier of the book to be deleted.
 
 ##### Success
 
-- 303 - See Other[^1]
-- Location: /books
+- 204 - No Content
 
-  If the book was successfully deleted the client will receive a 303 - See Other response plus a Location header containing the URL to the books collection.
+  If the book was successfully deleted the client will receive a 204 - No Content response.
 
 ##### Unknown BookId
 
-- 404 - Not Found[^2]
+- 404 - Not Found[^1]
 
 If the bookId is numeric but was not found in the Book repository the client will receive a 404 - Not Found response indicating that no book exists with that id and no action was taken.
 
@@ -84,5 +83,4 @@ If a non-numeric book id was supplied the client will receive a 400 - Bad Reques
 
 Footnotes:
 
-[^1]: A 204 - Done response was rejected as a client would not navigate away from the deleted book's URL.
-[^2]: A 410 - Gone response was rejected as it indicates the id did previously exists which would necessitate tracking deleted book ids and ensuring they are not used again.
+[^1]: A 410 - Gone response was rejected as it indicates the id did previously exists which would necessitate tracking deleted book ids and ensuring they are not used again.

@@ -151,7 +151,7 @@ describe("DELETE /api/v1/books/{bookId} endpoint", () => {
 		const res = await request(app).delete("/api/v1/books/2");
 
 		// Assert
-		expect(res.statusCode).toEqual(303);
+		expect(res.statusCode).toEqual(204);
 	});
 
 	test("deleting a non-existent book returns 0 row deleted", async () => {
