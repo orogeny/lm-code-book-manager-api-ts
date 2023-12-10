@@ -91,6 +91,8 @@ describe("GET /api/v1/books/{bookId} endpoint", () => {
 
 		// Assert
 		expect(res.statusCode).toEqual(404);
+
+		expect(res.body).toEqual({ message: "No book exists with id: 77" });
 	});
 
 	test("controller successfully returns book object as JSON", async () => {
