@@ -111,6 +111,9 @@ describe("GET /api/v1/books/{bookId} endpoint", () => {
 
 describe("POST /api/v1/books endpoint", () => {
 	test("status code successfully 201 for saving a valid book", async () => {
+		// Arrange - we need bookService to respond with null, the bookId is not known
+		jest.spyOn(bookService, "getBook").mockResolvedValue(null);
+
 		// Act
 		const res = await request(app)
 			.post("/api/v1/books")
@@ -120,8 +123,26 @@ describe("POST /api/v1/books endpoint", () => {
 		expect(res.statusCode).toEqual(201);
 	});
 
+	test("status code 409 Conflict when book id already exists", async () => {
+		// Arrange - we need bookService to return an existing book
+		jest
+			.spyOn(bookService, "getBook")
+			.mockResolvedValue(dummyBookData[0] as Book);
+
+		//Act
+		const res = await request(app).post("/api/v1/books").send({
+			bookId: 1,
+			title: "Telephone Directory",
+			author: "British Telecom",
+		});
+
+		// Assert
+		expect(res.statusCode).toEqual(409);
+	});
+
 	test("status code 400 when saving ill formatted JSON", async () => {
 		// Arrange - we can enforce throwing an exception by mocking the implementation
+		jest.spyOn(bookService, "getBook").mockResolvedValue(null);
 		jest.spyOn(bookService, "saveBook").mockImplementation(() => {
 			throw new Error("Error saving book");
 		});
